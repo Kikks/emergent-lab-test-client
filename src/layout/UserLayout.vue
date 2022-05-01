@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import SideNav from "../components/SideNav.vue";
 import TopNav from "../components/TopNav.vue";
+import jwtDecode from "jwt-decode";
 
 export default {
   components: {
@@ -17,7 +18,19 @@ export default {
     this.checkScreen();
 
     const token = localStorage.getItem("token");
+
     if (!token) {
+      this.router.push("/auth/login");
+    }
+    const decodedToken = jwtDecode(token);
+
+    if (!decodedToken?.exp) {
+      this.router.push("/auth/login");
+    }
+
+    if (decodedToken.exp * 1000 < Date.now()) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       this.router.push("/auth/login");
     }
   },

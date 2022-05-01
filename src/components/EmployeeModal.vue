@@ -29,7 +29,7 @@ export default {
   watch: {
     isSuccess: function () {
       this.refetch();
-      this.setOpen(false);
+      this.handleClose();
     },
   },
   methods: {
@@ -41,6 +41,16 @@ export default {
     },
     setRole(role) {
       this.payload.role = role;
+    },
+    handleClose() {
+      this.payload = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        role: "staff",
+      };
+      this.setOpen(false);
     },
     handleSubmit() {
       this.errors = { firstName: "", lastName: "", email: "", phoneNumber: "" };
@@ -68,7 +78,7 @@ export default {
         <span
           class="material-symbols-outlined"
           role="button"
-          @click="setOpen(false)"
+          @click="handleClose()"
         >
           close
         </span>
@@ -125,7 +135,7 @@ export default {
           :value="payload.phoneNumber"
           :onChange="handleChange"
           className="col-span-2"
-          label="Password"
+          label="Phone Number"
           placeholder="080XXXXXXXX"
           name="phoneNumber"
           icon="visibility"
